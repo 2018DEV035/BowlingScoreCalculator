@@ -36,16 +36,31 @@ public class ScoreServiceTest {
 
 	@Test
 	public void testForGutterGame() {
-		for (int i = 0; i < 10; i++)
-			frames.add(new FrameDTO(0, 0));
+		setFrames(10, 0, 0);
 		assertEquals(0, scoreService.calculateScore(request));
 	}
 
 	@Test
 	public void testForAllSinglePins() {
-		for (int i = 0; i < 10; i++)
-			frames.add(new FrameDTO(1, 1));
+		setFrames(10, 1, 1);
 		assertEquals(20, scoreService.calculateScore(request));
+	}
+
+	@Test
+	public void testForFirstSpare() {
+		setSpareInFrame();
+		setFrames(9, 1, 1);
+		assertEquals(29, scoreService.calculateScore(request));
+	}
+
+	private void setSpareInFrame() {
+		frames.add(new FrameDTO(5, 5));
+	}
+
+	private void setFrames(int frameCount, int firstRoll, int secondRoll) {
+		for (int i = 0; i < frameCount; i++) {
+			frames.add(new FrameDTO(firstRoll, secondRoll));
+		}
 	}
 
 }

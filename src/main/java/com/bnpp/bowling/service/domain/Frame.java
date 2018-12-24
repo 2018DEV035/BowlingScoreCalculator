@@ -18,4 +18,8 @@ public class Frame {
 		return firstRoll;
 	}
 
+	public boolean isSpare() {
+		return firstRoll + secondRoll == 10;
+	}
+
 }

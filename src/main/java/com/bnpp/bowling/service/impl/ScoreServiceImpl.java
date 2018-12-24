@@ -13,12 +13,17 @@ public class ScoreServiceImpl implements ScoreService {
 	private ArrayList<Frame> frames;
 	private int totalScore;
 
+	private static final int BONUS = 10;
+
 	@Override
 	public int calculateScore(ScoreRequestVO request) {
 		initializeFrames(request.getFrames());
 		for (int frameIndex = 0; frameIndex < 10; frameIndex++) {
 			Frame frame = frames.get(frameIndex);
-			totalScore += +frame.getTotal();
+			if (frame.isSpare())
+				totalScore += +BONUS + frames.get(frameIndex + 1).getFirstRoll();
+			else
+				totalScore += +frame.getTotal();
 		}
 		return totalScore;
 	}
