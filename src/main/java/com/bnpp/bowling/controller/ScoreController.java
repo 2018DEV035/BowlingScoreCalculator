@@ -22,6 +22,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * ScoreController handles APIs to perform score calculation
@@ -50,7 +51,7 @@ public class ScoreController {
 	@PostMapping(value = "/calculateScore", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ScoreResponseVO> calculateScore(
 			@RequestBody @Valid @ApiParam(value = "List of frame objects with min size 10 and max size 11") ScoreRequestVO scoreRequestVO,
-			Errors errors) {
+			@ApiIgnore Errors errors) {
 		logger.debug("calculateScore() API is invoked");
 		ScoreResponseVO response = new ScoreResponseVO();
 		HttpStatus status;
