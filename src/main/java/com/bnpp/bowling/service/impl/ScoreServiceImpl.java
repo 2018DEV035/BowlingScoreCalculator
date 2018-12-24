@@ -3,11 +3,16 @@ package com.bnpp.bowling.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.annotation.RequestScope;
+
 import com.bnpp.bowling.dto.FrameDTO;
 import com.bnpp.bowling.service.ScoreService;
 import com.bnpp.bowling.service.domain.Frame;
 import com.bnpp.bowling.vo.ScoreRequestVO;
 
+@Service
+@RequestScope
 public class ScoreServiceImpl implements ScoreService {
 
 	private ArrayList<Frame> frames;

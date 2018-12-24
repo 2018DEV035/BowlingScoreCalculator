@@ -32,6 +32,8 @@ public class ScoreServiceTest {
 	public void tearDown() {
 
 		scoreService = null;
+		frames = null;
+		request = null;
 	}
 
 	@Test
