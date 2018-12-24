@@ -23,6 +23,8 @@ import com.bnpp.bowling.service.ScoreService;
 public class ScoreControllerTest {
 
 	private MockMvc mockMvc;
+	private static final String API_URL = "/score/calculateScore";
+	private static final String ERROR_MSG_PATH = "$.errorMessage";
 
 	@Mock
 	private ScoreService mockService;
@@ -49,7 +51,7 @@ public class ScoreControllerTest {
 	public void testAllFramesOnes() throws Exception {
 		String inputJson = "{  \"frames\": [    {      \"firstRoll\": 1,      \"secondRoll\": 1    },    {      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    }  ]}";
 		when(mockService.calculateScore(any())).thenReturn(20);
-		this.mockMvc.perform(post("/score/calculateScore").contentType(MediaType.APPLICATION_JSON).content(inputJson))
+		this.mockMvc.perform(post(API_URL).contentType(MediaType.APPLICATION_JSON).content(inputJson))
 				.andExpect(status().isOk()).andExpect(jsonPath("$.score").value(20));
 	}
 
@@ -61,9 +63,9 @@ public class ScoreControllerTest {
 	@Test
 	public void testCalculateScoreForInvalidGreaterPins() throws Exception {
 		String jsonInput = "{  \"frames\": [    {      \"firstRoll\": 11,      \"secondRoll\": 1    },    {      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    }  ]}";
-		this.mockMvc.perform(post("/score/calculateScore").contentType(MediaType.APPLICATION_JSON).content(jsonInput))
+		this.mockMvc.perform(post(API_URL).contentType(MediaType.APPLICATION_JSON).content(jsonInput))
 				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath("$.errorMessage").value("First Roll value should be lesser than or equal to 10"));
+				.andExpect(jsonPath(ERROR_MSG_PATH).value("First Roll value should be lesser than or equal to 10"));
 	}
 
 	/**
@@ -75,8 +77,8 @@ public class ScoreControllerTest {
 	@Test
 	public void testCalculateScoreForBadRequestWithOnlyOneFrame() throws Exception {
 		String jsonInput = "{  \"frames\": [    {      \"firstRoll\": 1,      \"secondRoll\": 1    }]}";
-		this.mockMvc.perform(post("/score/calculateScore").contentType(MediaType.APPLICATION_JSON).content(jsonInput))
-				.andExpect(status().isBadRequest()).andExpect(jsonPath("$.errorMessage").value(
+		this.mockMvc.perform(post(API_URL).contentType(MediaType.APPLICATION_JSON).content(jsonInput))
+				.andExpect(status().isBadRequest()).andExpect(jsonPath(ERROR_MSG_PATH).value(
 						"Minimum of 10 frames are required to calculate the total score. Please verify your input"));
 	}
 
@@ -89,8 +91,8 @@ public class ScoreControllerTest {
 	@Test
 	public void testCalculateScoreForBadRequestWithNullFrame() throws Exception {
 		String jsonInput = "{  \"frames\": [  ]}";
-		this.mockMvc.perform(post("/score/calculateScore").contentType(MediaType.APPLICATION_JSON).content(jsonInput))
-				.andExpect(status().isBadRequest()).andExpect(jsonPath("$.errorMessage").value(
+		this.mockMvc.perform(post(API_URL).contentType(MediaType.APPLICATION_JSON).content(jsonInput))
+				.andExpect(status().isBadRequest()).andExpect(jsonPath(ERROR_MSG_PATH).value(
 						"Minimum of 10 frames are required to calculate the total score. Please verify your input"));
 	}
 
@@ -103,8 +105,8 @@ public class ScoreControllerTest {
 	@Test
 	public void testCalculateScoreForBadRequestWithMoreThanElevenFrames() throws Exception {
 		String jsonInput = "{  \"frames\": [    {      \"firstRoll\": 0,      \"secondRoll\": 1    },    {      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    }  ]}";
-		this.mockMvc.perform(post("/score/calculateScore").contentType(MediaType.APPLICATION_JSON).content(jsonInput))
-				.andExpect(status().isBadRequest()).andExpect(jsonPath("$.errorMessage")
+		this.mockMvc.perform(post(API_URL).contentType(MediaType.APPLICATION_JSON).content(jsonInput))
+				.andExpect(status().isBadRequest()).andExpect(jsonPath(ERROR_MSG_PATH)
 						.value("Not more than 11 frames are allowed for calculation. Please verify your input"));
 	}
 
@@ -117,8 +119,8 @@ public class ScoreControllerTest {
 	@Test
 	public void testCalculateScoreForBadRequestWithPinAsNull() throws Exception {
 		String jsonInput = "{  \"frames\": [    {      \"firstRoll\": 0,      \"secondRoll\": 1    },    {      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": null    }  ]}";
-		this.mockMvc.perform(post("/score/calculateScore").contentType(MediaType.APPLICATION_JSON).content(jsonInput))
-				.andExpect(status().isBadRequest()).andExpect(jsonPath("$.errorMessage")
+		this.mockMvc.perform(post(API_URL).contentType(MediaType.APPLICATION_JSON).content(jsonInput))
+				.andExpect(status().isBadRequest()).andExpect(jsonPath(ERROR_MSG_PATH)
 						.value("Second Roll value should not be null. Please enter 0 for no pins"));
 	}
 
@@ -132,9 +134,9 @@ public class ScoreControllerTest {
 	public void testForInternalError() throws Exception {
 		String jsonInput = "{  \"frames\": [    {      \"firstRoll\": 1,      \"secondRoll\": 1    },    {      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    },{      \"firstRoll\": 1,      \"secondRoll\": 1    }  ]}";
 		when(mockService.calculateScore(any())).thenThrow(new ArrayIndexOutOfBoundsException("Error occurred"));
-		this.mockMvc.perform(post("/score/calculateScore").contentType(MediaType.APPLICATION_JSON).content(jsonInput))
+		this.mockMvc.perform(post(API_URL).contentType(MediaType.APPLICATION_JSON).content(jsonInput))
 				.andExpect(status().isInternalServerError())
-				.andExpect(jsonPath("$.errorMessage").value("Error occurred"));
+				.andExpect(jsonPath(ERROR_MSG_PATH).value("Error occurred"));
 	}
 
 	/**

@@ -11,7 +11,7 @@
 	<groupId>com.bnpp</groupId>
 	<artifactId>BowlingScoreCalculator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<description></description>
+	<description>American 10 pin Score Calculator</description>
 	<properties>
 		<swagger.version>2.9.2</swagger.version>
 		<pit.version>1.4.3</pit.version>

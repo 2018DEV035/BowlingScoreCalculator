@@ -87,7 +87,7 @@ public class ScoreServiceImpl implements ScoreService {
 	 * Method to initialize each frame values from controller and values for bonus
 	 * rolls in separate frames (if exists)
 	 *
-	 * @param framesRequestList
+	 * @param framesList
 	 *            Convert from VO to DTO frame object
 	 */
 	private void initializeFrames(List<FrameDTO> framesList) {
