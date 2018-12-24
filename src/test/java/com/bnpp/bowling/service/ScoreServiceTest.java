@@ -68,12 +68,32 @@ public class ScoreServiceTest {
 		assertEquals(30, scoreService.calculateScore(request));
 	}
 
+	@Test
+	public void testForLastSpare() {
+		setFrames(9, 1, 1);
+		setSpareInFrame();
+		setBonusFrame(1, 0);
+		assertEquals(29, scoreService.calculateScore(request));
+	}
+
+	@Test
+	public void testForLastStrike() {
+		setFrames(9, 1, 1);
+		setStrikeInFrame();
+		setBonusFrame(1, 1);
+		assertEquals(30, scoreService.calculateScore(request));
+	}
+
 	private void setSpareInFrame() {
 		frames.add(new FrameDTO(5, 5));
 	}
 
 	private void setStrikeInFrame() {
 		frames.add(new FrameDTO(10, 0));
+	}
+
+	private void setBonusFrame(int firstRoll, int secondRoll) {
+		frames.add(new FrameDTO(firstRoll, secondRoll));
 	}
 
 	private void setFrames(int frameCount, int firstRoll, int secondRoll) {

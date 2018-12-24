@@ -14,20 +14,25 @@ public class ScoreServiceImpl implements ScoreService {
 	private int totalScore;
 
 	private static final int BONUS = 10;
+	private static final int GAMES_FRAME_SIZE = 10;
+	private static final int BONUS_FRAME_SIZE = 11;
 
 	@Override
 	public int calculateScore(ScoreRequestVO request) {
 		initializeFrames(request.getFrames());
-		for (int frameIndex = 0; frameIndex < 10; frameIndex++) {
+		for (int frameIndex = 0; frameIndex < GAMES_FRAME_SIZE; frameIndex++) {
 			Frame frame = frames.get(frameIndex);
-			if (frame.isStrike())
-				totalScore += +BONUS + frames.get(frameIndex + 1).getTotal();
-			else if (frame.isSpare())
-				totalScore += +BONUS + frames.get(frameIndex + 1).getFirstRoll();
-			else
-				totalScore += +frame.getTotal();
+			if (frame.isStrike()) {
+				totalScore += BONUS + frames.get(frameIndex + 1).getTotal();
+				if (frameIndex + 1 == GAMES_FRAME_SIZE)
+					totalScore += frames.get(frameIndex + 1).getTotal();
+			} else if (frame.isSpare()) {
+				totalScore += BONUS + frames.get(frameIndex + 1).getFirstRoll();
+			} else
+				totalScore += frame.getTotal();
 		}
 		return totalScore;
+
 	}
 
 	private void initializeFrames(List<FrameDTO> framesList) {
@@ -38,6 +43,11 @@ public class ScoreServiceImpl implements ScoreService {
 				FrameDTO frameDTO = framesList.get(index);
 				frames.add(new Frame(frameDTO.getFirstRoll(), frameDTO.getSecondRoll()));
 			}
+		}
+		if (framesList.size() == BONUS_FRAME_SIZE) {
+			FrameDTO bonusFrame = framesList.get(BONUS_FRAME_SIZE - 1);
+			frames.add(new Frame(bonusFrame.getFirstRoll(), 0));
+			frames.add(new Frame(bonusFrame.getSecondRoll(), 0));
 		}
 
 	}
