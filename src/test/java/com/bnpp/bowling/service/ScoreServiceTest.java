@@ -118,6 +118,13 @@ public class ScoreServiceTest {
 		assertEquals(300, scoreService.calculateScore(request));
 	}
 
+	@Test
+	public void testFinalStrikeWithNoBonusFrame() {
+		setFrames(9, 1, 1);
+		setFrames(1, 10, 0);
+		assertEquals(18, scoreService.calculateScore(request));
+	}
+
 	private void setSpareInFrame() {
 		frames.add(new FrameDTO(5, 5));
 	}
