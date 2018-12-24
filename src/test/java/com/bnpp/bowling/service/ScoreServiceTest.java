@@ -2,20 +2,30 @@ package com.bnpp.bowling.service;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.bnpp.bowling.dto.FrameDTO;
 import com.bnpp.bowling.service.impl.ScoreServiceImpl;
+import com.bnpp.bowling.vo.ScoreRequestVO;
 
 public class ScoreServiceTest {
 
 	private ScoreService scoreService;
+	private ScoreRequestVO request;
+	private List<FrameDTO> frames;
 
 	@Before
 	public void setUp() {
 
 		scoreService = new ScoreServiceImpl();
+		request = new ScoreRequestVO();
+		frames = new ArrayList<>();
+		request.setFrames(frames);
 	}
 
 	@After
@@ -25,8 +35,17 @@ public class ScoreServiceTest {
 	}
 
 	@Test
-	public void test() {
-		assertEquals(0, scoreService.calculateScore(null));
+	public void testForGutterGame() {
+		for (int i = 0; i < 10; i++)
+			frames.add(new FrameDTO(0, 0));
+		assertEquals(0, scoreService.calculateScore(request));
+	}
+
+	@Test
+	public void testForAllSinglePins() {
+		for (int i = 0; i < 10; i++)
+			frames.add(new FrameDTO(1, 1));
+		assertEquals(20, scoreService.calculateScore(request));
 	}
 
 }
