@@ -23,18 +23,27 @@ public class ScoreServiceImpl implements ScoreService {
 		for (int frameIndex = 0; frameIndex < GAMES_FRAME_SIZE; frameIndex++) {
 			Frame frame = frames.get(frameIndex);
 			if (frame.isStrike()) {
-				totalScore += BONUS + frames.get(frameIndex + 1).getTotal();
-				if ((frameIndex + 2 <= frames.size() - 1)
-						&& (frameIndex + 1 == GAMES_FRAME_SIZE || frames.get(frameIndex + 1).isStrike())) {
-					totalScore += frames.get(frameIndex + 2).getFirstRoll();
-				}
+				addScoreForStrike(frameIndex);
 			} else if (frame.isSpare()) {
-				totalScore += BONUS + frames.get(frameIndex + 1).getFirstRoll();
-			} else
+				addScoreForSpare(frameIndex);
+			} else {
 				totalScore += frame.getTotal();
+			}
 		}
 		return totalScore;
 
+	}
+
+	private void addScoreForSpare(int frameIndex) {
+		totalScore += BONUS + frames.get(frameIndex + 1).getFirstRoll();
+	}
+
+	private void addScoreForStrike(int frameIndex) {
+		totalScore += BONUS + frames.get(frameIndex + 1).getTotal();
+		if ((frameIndex + 2 <= frames.size() - 1)
+				&& (frameIndex + 1 == GAMES_FRAME_SIZE || frames.get(frameIndex + 1).isStrike())) {
+			totalScore += frames.get(frameIndex + 2).getFirstRoll();
+		}
 	}
 
 	private void initializeFrames(List<FrameDTO> framesList) {

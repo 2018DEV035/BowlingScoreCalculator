@@ -83,7 +83,7 @@ public class ScoreServiceTest {
 		setBonusFrame(1, 1);
 		assertEquals(30, scoreService.calculateScore(request));
 	}
-	
+
 	@Test
 	public void testForConsecutiveSpare() {
 		setFrames(1, 1, 1);
@@ -92,7 +92,7 @@ public class ScoreServiceTest {
 		setFrames(7, 1, 1);
 		assertEquals(42, scoreService.calculateScore(request));
 	}
-	
+
 	@Test
 	public void testForConsecutiveStrike() {
 		setFrames(1, 1, 1);
@@ -100,6 +100,20 @@ public class ScoreServiceTest {
 		setStrikeInFrame();
 		setFrames(7, 1, 1);
 		assertEquals(49, scoreService.calculateScore(request));
+	}
+
+	@Test
+	public void testAllSpare() {
+		setFrames(10, 5, 5);
+		setBonusFrame(5, 0);
+		assertEquals(150, scoreService.calculateScore(request));
+	}
+
+	@Test
+	public void testAllStrike() {
+		setFrames(10, 10, 0);
+		setBonusFrame(10, 10);
+		assertEquals(300, scoreService.calculateScore(request));
 	}
 
 	private void setSpareInFrame() {
