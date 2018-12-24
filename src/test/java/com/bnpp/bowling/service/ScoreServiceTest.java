@@ -83,6 +83,24 @@ public class ScoreServiceTest {
 		setBonusFrame(1, 1);
 		assertEquals(30, scoreService.calculateScore(request));
 	}
+	
+	@Test
+	public void testForConsecutiveSpare() {
+		setFrames(1, 1, 1);
+		setSpareInFrame();
+		setSpareInFrame();
+		setFrames(7, 1, 1);
+		assertEquals(42, scoreService.calculateScore(request));
+	}
+	
+	@Test
+	public void testForConsecutiveStrike() {
+		setFrames(1, 1, 1);
+		setStrikeInFrame();
+		setStrikeInFrame();
+		setFrames(7, 1, 1);
+		assertEquals(49, scoreService.calculateScore(request));
+	}
 
 	private void setSpareInFrame() {
 		frames.add(new FrameDTO(5, 5));

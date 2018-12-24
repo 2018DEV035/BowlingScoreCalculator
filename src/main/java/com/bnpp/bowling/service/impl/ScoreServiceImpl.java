@@ -24,8 +24,10 @@ public class ScoreServiceImpl implements ScoreService {
 			Frame frame = frames.get(frameIndex);
 			if (frame.isStrike()) {
 				totalScore += BONUS + frames.get(frameIndex + 1).getTotal();
-				if (frameIndex + 1 == GAMES_FRAME_SIZE)
-					totalScore += frames.get(frameIndex + 1).getTotal();
+				if ((frameIndex + 2 <= frames.size() - 1)
+						&& (frameIndex + 1 == GAMES_FRAME_SIZE || frames.get(frameIndex + 1).isStrike())) {
+					totalScore += frames.get(frameIndex + 2).getFirstRoll();
+				}
 			} else if (frame.isSpare()) {
 				totalScore += BONUS + frames.get(frameIndex + 1).getFirstRoll();
 			} else
