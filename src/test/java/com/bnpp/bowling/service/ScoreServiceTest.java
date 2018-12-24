@@ -53,8 +53,27 @@ public class ScoreServiceTest {
 		assertEquals(29, scoreService.calculateScore(request));
 	}
 
+	@Test
+	public void testForMiddleSpare() {
+		setFrames(4, 1, 1);
+		setSpareInFrame();
+		setFrames(5, 1, 1);
+		assertEquals(29, scoreService.calculateScore(request));
+	}
+
+	@Test
+	public void testForFirstStrike() {
+		setStrikeInFrame();
+		setFrames(9, 1, 1);
+		assertEquals(30, scoreService.calculateScore(request));
+	}
+
 	private void setSpareInFrame() {
 		frames.add(new FrameDTO(5, 5));
+	}
+
+	private void setStrikeInFrame() {
+		frames.add(new FrameDTO(10, 0));
 	}
 
 	private void setFrames(int frameCount, int firstRoll, int secondRoll) {

@@ -22,4 +22,8 @@ public class Frame {
 		return firstRoll + secondRoll == 10;
 	}
 
+	public boolean isStrike() {
+		return firstRoll == 10;
+	}
+
 }

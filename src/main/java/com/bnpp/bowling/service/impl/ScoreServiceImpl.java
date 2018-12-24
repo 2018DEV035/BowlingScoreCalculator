@@ -20,7 +20,9 @@ public class ScoreServiceImpl implements ScoreService {
 		initializeFrames(request.getFrames());
 		for (int frameIndex = 0; frameIndex < 10; frameIndex++) {
 			Frame frame = frames.get(frameIndex);
-			if (frame.isSpare())
+			if (frame.isStrike())
+				totalScore += +BONUS + frames.get(frameIndex + 1).getTotal();
+			else if (frame.isSpare())
 				totalScore += +BONUS + frames.get(frameIndex + 1).getFirstRoll();
 			else
 				totalScore += +frame.getTotal();
