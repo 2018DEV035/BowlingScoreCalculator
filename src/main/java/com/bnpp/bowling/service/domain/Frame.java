@@ -1,5 +1,8 @@
 package com.bnpp.bowling.service.domain;
 
+/**
+ * POJO object to store each frame details
+ */
 public class Frame {
 
 	private int firstRoll;

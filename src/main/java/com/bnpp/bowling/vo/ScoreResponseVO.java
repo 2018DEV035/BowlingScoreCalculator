@@ -1,5 +1,10 @@
 package com.bnpp.bowling.vo;
 
+/**
+ * 
+ * VO to pass response values
+ *
+ */
 public class ScoreResponseVO {
 
 	private int score;

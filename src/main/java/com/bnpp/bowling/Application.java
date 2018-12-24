@@ -5,6 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Sprint Boot Application to calculate American Bowling Score
+ */
 @Configuration
 @ComponentScan({ "com.bnpp.bowling" })
 @SpringBootApplication

@@ -3,6 +3,8 @@ package com.bnpp.bowling.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 
@@ -11,6 +13,10 @@ import com.bnpp.bowling.service.ScoreService;
 import com.bnpp.bowling.service.domain.Frame;
 import com.bnpp.bowling.vo.ScoreRequestVO;
 
+/**
+ * To calculate score for 10-pin American Bowling. This Program assumes all
+ * frame detail inputs are valid. Implements ScoringService interface
+ */
 @Service
 @RequestScope
 public class ScoreServiceImpl implements ScoreService {
@@ -21,7 +27,15 @@ public class ScoreServiceImpl implements ScoreService {
 	private static final int BONUS = 10;
 	private static final int GAMES_FRAME_SIZE = 10;
 	private static final int BONUS_FRAME_SIZE = 11;
+	private Logger logger = LogManager.getLogger(ScoreServiceImpl.class);
 
+	/**
+	 * Calculates the total score based on input of all frames
+	 *
+	 * @param request
+	 *            Input with list of FrameDTO values
+	 * @return totalScore
+	 */
 	@Override
 	public int calculateScore(ScoreRequestVO request) {
 		initializeFrames(request.getFrames());
@@ -34,15 +48,31 @@ public class ScoreServiceImpl implements ScoreService {
 			} else {
 				totalScore += frame.getTotal();
 			}
+			logger.debug("Total score from frame {} is {}", frameIndex + 1, totalScore);
 		}
 		return totalScore;
 
 	}
 
+	/**
+	 * Adds bonus score if the frame scores a spare
+	 *
+	 * @param frameIndex
+	 *            Current index of iteration of total frame size
+	 */
 	private void addScoreForSpare(int frameIndex) {
-		totalScore += BONUS + frames.get(frameIndex + 1).getFirstRoll();
+		if ((frameIndex + 1 <= frames.size() - 1)) {
+			totalScore += BONUS + frames.get(frameIndex + 1).getFirstRoll();
+		}
+		logger.debug("Spare Bonus score added for frame index {} and total score is {}", frameIndex, totalScore);
 	}
 
+	/**
+	 * Adds bonus score if the frame scores a strike
+	 *
+	 * @param frameIndex
+	 *            Current index of iteration of total frame size
+	 */
 	private void addScoreForStrike(int frameIndex) {
 		if (frameIndex + 1 <= frames.size() - 1)
 			totalScore += BONUS + frames.get(frameIndex + 1).getTotal();
@@ -50,8 +80,16 @@ public class ScoreServiceImpl implements ScoreService {
 				&& (frameIndex + 1 == GAMES_FRAME_SIZE || frames.get(frameIndex + 1).isStrike())) {
 			totalScore += frames.get(frameIndex + 2).getFirstRoll();
 		}
+		logger.debug("Strike Bonus score added for frame index {} and total score is {}", frameIndex, totalScore);
 	}
 
+	/**
+	 * Method to initialize each frame values from controller and values for bonus
+	 * rolls in separate frames (if exists)
+	 *
+	 * @param framesRequestList
+	 *            Convert from VO to DTO frame object
+	 */
 	private void initializeFrames(List<FrameDTO> framesList) {
 		totalScore = 0;
 		frames = new ArrayList<>();
@@ -63,6 +101,8 @@ public class ScoreServiceImpl implements ScoreService {
 		}
 		if (framesList.size() == BONUS_FRAME_SIZE) {
 			FrameDTO bonusFrame = framesList.get(BONUS_FRAME_SIZE - 1);
+			logger.debug("Bonus frame exists. Setting up bonus roll details with values {} and {}",
+					bonusFrame.getFirstRoll(), bonusFrame.getSecondRoll());
 			frames.add(new Frame(bonusFrame.getFirstRoll(), 0));
 			frames.add(new Frame(bonusFrame.getSecondRoll(), 0));
 		}

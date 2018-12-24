@@ -4,6 +4,10 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+/**
+ * DTO to store each frame pin details for first and second roll
+ *
+ */
 public class FrameDTO {
 
 	public FrameDTO() {

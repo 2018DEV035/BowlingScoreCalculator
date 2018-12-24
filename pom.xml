@@ -12,6 +12,12 @@
 	<artifactId>BowlingScoreCalculator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<description></description>
+	<properties>
+		<swagger.version>2.9.2</swagger.version>
+		<pit.version>1.4.3</pit.version>
+		<source.compiler.version>1.8</source.compiler.version>
+		<target.compiler.version>1.8</target.compiler.version>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -25,12 +31,12 @@
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
-			<version>2.9.2</version>
+			<version>${swagger.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
-			<version>2.9.2</version>
+			<version>${swagger.version}</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -38,7 +44,7 @@
 			<plugin>
 				<groupId>org.pitest</groupId>
 				<artifactId>pitest-maven</artifactId>
-				<version>1.4.3</version>
+				<version>${pit.version}</version>
 				<executions>
 					<execution>
 						<id>default-report</id>
@@ -53,8 +59,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>${source.compiler.version}</source>
+					<target>${target.compiler.version}</target>
 				</configuration>
 			</plugin>
 		</plugins>
